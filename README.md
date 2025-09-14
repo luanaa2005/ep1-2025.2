@@ -10,9 +10,9 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
 
 ## Dados do Aluno
 
-- **Nome completo:** [Preencher aqui]
-- **Matrícula:** [Preencher aqui]
-- **Curso:** [Preencher aqui]
+- **Nome completo:** Luana Carvalho de Almeida
+- **Matrícula:** 242004840
+- **Curso:** Engenharias
 - **Turma:** [Preencher aqui]
 
 ---

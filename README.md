@@ -140,3 +140,27 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 - Exportação de relatórios em formato .csv ou .pdf.  
 - Implementação de testes unitários para classes principais.  
 - Menu visual.
+
+
+## 📅 Cronograma de Desenvolvimento
+
+| Data  | Tarefa                                                                 | Status |
+|-------|------------------------------------------------------------------------|--------|
+| 14/09 | Revisar requisitos e listar classes principais                         | ☐ |
+| 15/09 | Criar diagrama de classes e iniciar projeto Java                       | ☐ |
+| 16/09 | Implementar classes **Paciente** e **Médico**                          | ☐ |
+| 17/09 | Implementar classes **Consulta**, **Internação** e **PlanoSaude**      | ☐ |
+| 18/09 | Criar menu inicial no terminal                                         | ☐ |
+| 19/09 | Implementar **agendamento de consultas** com regras de conflito/planos | ☐ |
+| 20/09 | Implementar **internações** com controle de quartos e cancelamentos    | ☐ |
+| 21/09 | Testar fluxo completo: cadastro → consulta → internação                | ☐ |
+| 22/09 | Persistência de **pacientes e médicos** em arquivos                    | ☐ |
+| 23/09 | Persistência de **consultas e internações** em arquivos                | ☐ |
+| 24/09 | Relatórios básicos: pacientes e médicos cadastrados                    | ☐ |
+| 25/09 | Relatórios avançados: consultas, internados, estatísticas              | ☐ |
+| 26/09 | Melhorar menu interativo e navegação                                   | ☐ |
+| 27/09 | Revisar código: pacotes, nomes claros, comentários                     | ☐ |
+| 28/09 | Tirar **prints** do sistema em execução                                | ☐ |
+| 29/09 | Gravar vídeo de demonstração (até 5 min)                               | ☐ |
+| 30/09 | Escrever README final + adicionar prints + link do vídeo               | ☐ |
+| 01/10 | Revisão final e entrega                                                | ☐ |

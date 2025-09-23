@@ -146,49 +146,70 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 
 ### Dia 1 – Estrutura e Classes Base
 
-- [ x ] Criar pastas: /model, /service, /repo, /view, /util 
+✅ Criar pastas: /model, /service, /repo, /view, /util 
 
-- [ x ] Implementar Pessoa (abstract)
+✅ Implementar Pessoa (abstract)
 
 ☐ Implementar Paciente
 
 ☐ Implementar Medico
 
 ☐ Criar enums Especialidade e StatusConsulta
+
 ☐ Definir interface PlanoSaude
 
-Dia 2 – Persistência (CSV)
+
+### Dia 2 – Persistência (CSV)
+
 ☐ Implementar PacienteRepo (cadastrar, listar, salvar/carregar CSV)
+
 ☐ Implementar MedicoRepo
+
 ☐ Testar gravação/carregamento em pacientes.csv e medicos.csv
 
-Dia 3 – Consultas (Agendamento - Parte 1)
+### Dia 3 – Consultas (Agendamento - Parte 1)
 ☐ Criar classe Consulta
+
 ☐ Criar AgendamentoService.agendar()
+
 ☐ Validar disponibilidade do médico
+
 ☐ Validar conflito de horário/local
 
-Dia 4 – Consultas (Parte 2)
+### Dia 4 – Consultas (Parte 2)
 ☐ Implementar concluir consulta (diagnóstico, prescrição)
+
 ☐ Implementar cancelar consulta (liberar agenda)
+
 ☐ Persistir em consultas.csv
 
-Dia 5 – Internações
+### Dia 5 – Internações
 ☐ Criar classe Internacao
+
 ☐ Criar InternacaoService (internar, alta, cancelar)
+
 ☐ Implementar regra de quarto ocupado (não permitir duplicado)
+
 ☐ Persistência em internacoes.csv
 
-Dia 6 – Planos de Saúde e Regras Especiais
+### Dia 6 – Planos de Saúde e Regras Especiais
 ☐ Implementar PlanoBasico
+
 ☐ Implementar PlanoPlus
+
 ☐ Implementar PlanoEspecial (internação <7 dias gratuita, desconto para 60+)
+
 ☐ Integrar desconto no cálculo de consultas e internações
 
-Dia 7 – Relatórios e Revisão Final
+### Dia 7 – Relatórios e Revisão Final
 ☐ Relatório de pacientes (com histórico)
+
 ☐ Relatório de médicos (agenda e nº consultas)
+
 ☐ Relatório de consultas futuras/passadas (com filtros)
+
 ☐ Relatório de internados no momento (tempo de internação)
+
 ☐ Estatísticas (médico que mais atendeu, especialidade mais procurada, economia por plano)
+
 ☐ Revisar menu principal e testes manuais

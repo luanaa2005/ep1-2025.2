@@ -152,7 +152,7 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 
 ✅ Implementar Paciente
 
-☐ Implementar Medico
+✅ Implementar Medico
 
 ☐ Criar enums Especialidade e StatusConsulta
 

@@ -163,7 +163,7 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 
 ✅ Implementar PacienteRepo (cadastrar, listar, salvar/carregar CSV)
 
-☐ Implementar MedicoRepo
+✅ Implementar MedicoRepo
 
 ☐ Testar gravação/carregamento em pacientes.csv e medicos.csv
 

@@ -165,7 +165,7 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 
 ✅ Implementar MedicoRepo
 
-☐ Testar gravação/carregamento em pacientes.csv e medicos.csv
+✅ Testar gravação/carregamento em pacientes.csv e medicos.csv
 
 ### Dia 3 – Consultas (Agendamento - Parte 1)
 ☐ Criar classe Consulta

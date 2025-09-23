@@ -154,7 +154,7 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 
 ✅ Implementar Medico
 
-☐ Criar enums Especialidade e StatusConsulta
+✅ Criar enums Especialidade e StatusConsulta
 
 ☐ Definir interface PlanoSaude
 

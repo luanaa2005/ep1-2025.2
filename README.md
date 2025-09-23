@@ -144,23 +144,46 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 
 ## 📅 Cronograma de Desenvolvimento
 
-| Data  | Tarefa                                                                 | Status |
-|-------|------------------------------------------------------------------------|--------|
-| 14/09 | Revisar requisitos e listar classes principais                         | ☐ |
-| 15/09 | Criar diagrama de classes e iniciar projeto Java                       | ☐ |
-| 16/09 | Implementar classes **Paciente** e **Médico**                          | ☐ |
-| 17/09 | Implementar classes **Consulta**, **Internação** e **PlanoSaude**      | ☐ |
-| 18/09 | Criar menu inicial no terminal                                         | ☐ |
-| 19/09 | Implementar **agendamento de consultas** com regras de conflito/planos | ☐ |
-| 20/09 | Implementar **internações** com controle de quartos e cancelamentos    | ☐ |
-| 21/09 | Testar fluxo completo: cadastro → consulta → internação                | ☐ |
-| 22/09 | Persistência de **pacientes e médicos** em arquivos                    | ☐ |
-| 23/09 | Persistência de **consultas e internações** em arquivos                | ☐ |
-| 24/09 | Relatórios básicos: pacientes e médicos cadastrados                    | ☐ |
-| 25/09 | Relatórios avançados: consultas, internados, estatísticas              | ☐ |
-| 26/09 | Melhorar menu interativo e navegação                                   | ☐ |
-| 27/09 | Revisar código: pacotes, nomes claros, comentários                     | ☐ |
-| 28/09 | Tirar **prints** do sistema em execução                                | ☐ |
-| 29/09 | Gravar vídeo de demonstração (até 5 min)                               | ☐ |
-| 30/09 | Escrever README final + adicionar prints + link do vídeo               | ☐ |
-| 01/10 | Revisão final e entrega                                                | ☐ |
+Dia 1 – Estrutura e Classes Base
+✅Criar pastas: /model, /service, /repo, /view, /util
+✅ Implementar Pessoa (abstract)
+☐ Implementar Paciente
+☐ Implementar Medico
+☐ Criar enums Especialidade e StatusConsulta
+☐ Definir interface PlanoSaude
+
+Dia 2 – Persistência (CSV)
+☐ Implementar PacienteRepo (cadastrar, listar, salvar/carregar CSV)
+☐ Implementar MedicoRepo
+☐ Testar gravação/carregamento em pacientes.csv e medicos.csv
+
+Dia 3 – Consultas (Agendamento - Parte 1)
+☐ Criar classe Consulta
+☐ Criar AgendamentoService.agendar()
+☐ Validar disponibilidade do médico
+☐ Validar conflito de horário/local
+
+Dia 4 – Consultas (Parte 2)
+☐ Implementar concluir consulta (diagnóstico, prescrição)
+☐ Implementar cancelar consulta (liberar agenda)
+☐ Persistir em consultas.csv
+
+Dia 5 – Internações
+☐ Criar classe Internacao
+☐ Criar InternacaoService (internar, alta, cancelar)
+☐ Implementar regra de quarto ocupado (não permitir duplicado)
+☐ Persistência em internacoes.csv
+
+Dia 6 – Planos de Saúde e Regras Especiais
+☐ Implementar PlanoBasico
+☐ Implementar PlanoPlus
+☐ Implementar PlanoEspecial (internação <7 dias gratuita, desconto para 60+)
+☐ Integrar desconto no cálculo de consultas e internações
+
+Dia 7 – Relatórios e Revisão Final
+☐ Relatório de pacientes (com histórico)
+☐ Relatório de médicos (agenda e nº consultas)
+☐ Relatório de consultas futuras/passadas (com filtros)
+☐ Relatório de internados no momento (tempo de internação)
+☐ Estatísticas (médico que mais atendeu, especialidade mais procurada, economia por plano)
+☐ Revisar menu principal e testes manuais

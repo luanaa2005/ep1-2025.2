@@ -144,11 +144,16 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 
 ## 📅 Cronograma de Desenvolvimento
 
-Dia 1 – Estrutura e Classes Base
-✅Criar pastas: /model, /service, /repo, /view, /util
-✅ Implementar Pessoa (abstract)
+### Dia 1 – Estrutura e Classes Base
+
+- [ x ] Criar pastas: /model, /service, /repo, /view, /util 
+
+- [ x ] Implementar Pessoa (abstract)
+
 ☐ Implementar Paciente
+
 ☐ Implementar Medico
+
 ☐ Criar enums Especialidade e StatusConsulta
 ☐ Definir interface PlanoSaude
 

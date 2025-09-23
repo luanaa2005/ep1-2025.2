@@ -156,7 +156,7 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 
 ✅ Criar enums Especialidade e StatusConsulta
 
-☐ Definir interface PlanoSaude
+✅ Definir interface PlanoSaude
 
 
 ### Dia 2 – Persistência (CSV)

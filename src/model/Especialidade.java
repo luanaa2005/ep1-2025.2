@@ -9,7 +9,7 @@ package model;
 
 public enum Especialidade {
     CARDIOLOGIA("Cardiologia"),
-    PEDIATRIA("pediatria"),
+    PEDIATRIA("Pediatria"),
     GERAL("Clínica Geral");
 
     //nomes das constantes em CAIXA_ALTA com _ no lugar de espaço.

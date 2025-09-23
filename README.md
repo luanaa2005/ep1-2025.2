@@ -150,7 +150,7 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 
 ✅ Implementar Pessoa (abstract)
 
-☐ Implementar Paciente
+✅ Implementar Paciente
 
 ☐ Implementar Medico
 

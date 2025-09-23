@@ -1,16 +1,7 @@
 # 🏥 Sistema de Gerenciamento Hospitalar – Plano de Implementação (Java/POO)
 
-**Aluna:** Luana Carvalho de Almeida  
-**Matrícula:** 242004840  
-**Curso:** Engenharias  
-**Turma:** _[preencher]_  
-**Java sugerido:** 21  
 
-> Objetivo: Guiar você para **entender** os conceitos de POO cobrados e **conseguir implementar sozinha**, com um roteiro prático, modelagem clara, regras de negócio, planos de persistência em arquivo e um esqueleto de classes (assinaturas) para você completar.
-
----
-
-## 1) Conceitos-chave (tradução rápida)
+## Conceitos-chave (tradução rápida)
 - **Encapsulamento:** atributos `private` + `getters/setters` + métodos que protegem invariantes (ex.: impedir agendar consulta com conflito).  
 - **Herança:** `PacienteEspecial extends Paciente`; `Consulta` (base) e, se desejar, `ConsultaConvencional` vs `ConsultaPlano`.  
 - **Polimorfismo:** cálculo de **preço** e **descontos** variando por tipo de paciente/plano/especialidade usando **interface/strategy** (ex.: `CalculadoraDescontos`).  
@@ -18,7 +9,7 @@
 
 ---
 
-## 2) Escopo do Sistema (regras de negócio)
+## Escopo do Sistema (regras de negócio)
 1. **Pacientes**  
    - Comuns e Especiais (têm Plano).  
    - Campos: `nome`, `cpf`, `idade`. Histórico: consultas e internações.
@@ -41,7 +32,7 @@
 
 ---
 
-## 3) Modelagem (UML simplificada – base)
+## Modelagem (UML simplificada – base)
 ```
 Pessoa (abstract)
   - nome:String
@@ -113,7 +104,7 @@ Serviços (regras)
 
 ---
 
-## 4) Estrutura de Pastas (sugestão Maven-free, simples)
+## Estrutura de Pastas (sugestão Maven-free, simples)
 ```
 /src
   /model        (entidades e enums)
@@ -128,7 +119,7 @@ README.md
 
 ---
 
-## 5) Persistência em Arquivos (CSV) – formatos sugeridos
+## Persistência em Arquivos (CSV) – formatos sugeridos
 - `pacientes.csv`: `cpf;nome;idade;tipoPlano`  
 - `medicos.csv`: `crm;nome;cpf;idade;especialidade;custoBase`  
 - `consultas.csv`: `id;cpfPaciente;crmMedico;dataHoraISO;local;status;diagnostico;prescricao;precoFinal`  
@@ -139,7 +130,7 @@ README.md
 
 ---
 
-## 6) Fluxo de Menu (CLI) – roteiro
+## Fluxo de Menu (CLI) – roteiro
 ```
 [1] Pacientes  -> cadastrar | listar | detalhar | vincular plano
 [2] Médicos    -> cadastrar | listar | agenda | custo base
@@ -164,7 +155,7 @@ README.md
 
 ---
 
-## 7) Esqueleto de Assinaturas (para você completar)
+## Esqueleto de Assinaturas (para você completar)
 > _Só assinaturas (sem implementação completa), para guiar seu código._
 
 ```java
@@ -233,7 +224,7 @@ public class InternacaoService {
 
 ---
 
-## 8) Relatórios – como calcular
+## Relatórios – como calcular
 - **Consultas futuras/passadas:** filtrar por `dataHora` `isAfter(now)` / `isBefore(now)` e combinar filtros por paciente/médico/especialidade.  
 - **Médico que mais atendeu:** `groupBy(medico).count().max()`.  
 - **Especialidade mais procurada:** `groupBy(consulta.medico.especialidade)`.  
@@ -242,7 +233,7 @@ public class InternacaoService {
 
 ---
 
-## 9) Roteiro de Entrega (passo a passo enxuto)
+## Roteiro de Entrega (passo a passo enxuto)
 **Dia 1:** Modelagem final (esta), criar pacotes, enums e entidades vazias + repos vazios.  
 **Dia 2:** Repositórios CSV (carregar/salvar) para Paciente e Médico.  
 **Dia 3:** Agenda do médico + `AgendamentoService.agendar()` com validações.  
@@ -253,7 +244,7 @@ public class InternacaoService {
 
 ---
 
-## 10) README – modelo
+## README – modelo
 ### Instruções de Compilação
 ```
 javac --release 21 -d out $(find src -name "*.java")

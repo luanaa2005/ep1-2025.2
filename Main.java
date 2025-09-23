@@ -19,9 +19,20 @@ public class Main {
     // TESTE: Pacientes
     PacienteRepo pacRepo = new PacienteRepo("data/pacientes.csv");
     System.out.println("[Pacientes] antes: " + pacRepo.listarTodos().size());
+
+    // cria um paciente (mesmo CPF do teste anterior, pra exercitar a checagem)
     Paciente p = new Paciente("Luana", "12345678900", 21);
-    p.setPlano(new PlanoBasico()); // com plano BASICO (opcional)
-    pacRepo.adicionar(p);
+    p.setPlano(new PlanoBasico()); // opcional
+
+    // só adiciona se ainda não existir
+    if (pacRepo.buscarPorCpf(p.getCpf()).isEmpty()) {
+      pacRepo.adicionar(p);
+      System.out.println("[Pacientes] adicionado agora.");
+    } else {
+      System.out.println("[Pacientes] já existia, não vou adicionar.");
+    }
+
     System.out.println("[Pacientes] depois: " + pacRepo.listarTodos().size());
   }
 }
+

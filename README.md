@@ -161,7 +161,7 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 
 ### Dia 2 – Persistência (CSV)
 
-☐ Implementar PacienteRepo (cadastrar, listar, salvar/carregar CSV)
+✅ Implementar PacienteRepo (cadastrar, listar, salvar/carregar CSV)
 
 ☐ Implementar MedicoRepo
 

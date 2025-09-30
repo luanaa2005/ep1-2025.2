@@ -4,7 +4,7 @@
    
    Programação Orientada a Objetos é uma forma de escrever programas pensando em objetos do mundo real.
 
-   Esses obejtos  têm:
+   Esses objetos  têm:
 
    - Atributos → características (ex: uma pessoa tem nome e idade).
 

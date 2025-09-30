@@ -168,13 +168,13 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 ✅ Testar gravação/carregamento em pacientes.csv e medicos.csv
 
 ### Dia 3 – Consultas (Agendamento - Parte 1)
-☐ Criar classe Consulta
+✅ Criar classe Consulta
 
-☐ Criar AgendamentoService.agendar()
+✅ Criar AgendamentoService.agendar()
 
-☐ Validar disponibilidade do médico
+✅ Validar disponibilidade do médico
 
-☐ Validar conflito de horário/local
+✅ Validar conflito de horário/local
 
 ### Dia 4 – Consultas (Parte 2)
 ☐ Implementar concluir consulta (diagnóstico, prescrição)

@@ -3,8 +3,9 @@ package service;
 import java.time.LocalDateTime;               // Consulta, Paciente, Medico, StatusConsulta, etc.
 import java.util.*;
 import model.*;
-import repo.MedicoRepo;
-import repo.PacienteRepo;           // List, ArrayList, Collections
+import repo.ConsultaRepo;
+import repo.MedicoRepo;           // List, ArrayList, Collections
+import repo.PacienteRepo;
 
 public class AgendamentoService {
 
@@ -13,11 +14,24 @@ public class AgendamentoService {
 
     private final PacienteRepo pacienteRepo;
     private final MedicoRepo   medicoRepo;
+    private final ConsultaRepo consultaRepo;
 
-    public AgendamentoService(PacienteRepo pacienteRepo, MedicoRepo medicoRepo) {
+
+    public AgendamentoService(PacienteRepo pacienteRepo, MedicoRepo medicoRepo, ConsultaRepo consultaRepo) {
         this.pacienteRepo = pacienteRepo;
         this.medicoRepo   = medicoRepo;
+        this.consultaRepo = consultaRepo;
     }
+
+    // salva o CSV sempre que a lista muda
+    private void salvar() {
+        try {
+            consultaRepo.salvarTodos(consultas);
+        } catch (java.io.IOException e) {
+            throw new RuntimeException("Erro salvando consultas.csv", e);
+        }
+    }
+
 
     // Agenda uma nova consulta aplicando validações e descontos de plano
     public Consulta agendar(String cpfPaciente, String crmMedico, LocalDateTime dataHora, String local) {
@@ -62,6 +76,7 @@ public class AgendamentoService {
         // 6) criar, guardar e retornar
         Consulta nova = new Consulta(paciente, medico, dataHora, local, precoFinal);
         consultas.add(nova);
+        salvar();
         return nova;
     }
 
@@ -69,4 +84,28 @@ public class AgendamentoService {
     public List<Consulta> listarTodas() {
         return Collections.unmodifiableList(consultas);
     }
+
+    // helper: acha consulta por id ou lança erro claro
+    private Consulta acharPorId(String id) {
+        if (id == null || id.isBlank()) throw new IllegalArgumentException("id vazio");
+        return consultas.stream()
+                .filter(c -> c.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Consulta não encontrada: " + id));
+    }
+
+    // concluir consulta
+    public void concluir(String idConsulta, String diagnostico, String prescricao) {
+        Consulta c = acharPorId(idConsulta);
+        c.concluir(diagnostico, prescricao); 
+        salvar();
+    }
+
+    // cancelar consulta
+    public void cancelar(String idConsulta) {
+        Consulta c = acharPorId(idConsulta);
+        c.cancelar();
+        salvar();
+    }
+
 }

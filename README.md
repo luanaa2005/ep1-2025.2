@@ -177,11 +177,11 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 ✅ Validar conflito de horário/local
 
 ### Dia 4 – Consultas (Parte 2)
-☐ Implementar concluir consulta (diagnóstico, prescrição)
+✅ Implementar concluir consulta (diagnóstico, prescrição)
 
-☐ Implementar cancelar consulta (liberar agenda)
+✅ Implementar cancelar consulta (liberar agenda)
 
-☐ Persistir em consultas.csv
+✅ Persistir em consultas.csv
 
 ### Dia 5 – Internações
 ☐ Criar classe Internacao

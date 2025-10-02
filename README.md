@@ -184,13 +184,13 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 ✅ Persistir em consultas.csv
 
 ### Dia 5 – Internações
-☐ Criar classe Internacao
+✅ Criar classe Internacao
 
-☐ Criar InternacaoService (internar, alta, cancelar)
+✅ Criar InternacaoService (internar, alta, cancelar)
 
-☐ Implementar regra de quarto ocupado (não permitir duplicado)
+✅ Implementar regra de quarto ocupado (não permitir duplicado)
 
-☐ Persistência em internacoes.csv
+✅ Persistência em internacoes.csv
 
 ### Dia 6 – Planos de Saúde e Regras Especiais
 ☐ Implementar PlanoBasico

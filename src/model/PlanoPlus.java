@@ -35,7 +35,7 @@ public class PlanoPlus implements PlanoSaude {
 
     @Override
     public boolean internacaoGratuitaAte7Dias() {
-        return true; // plano Plus tem internação gratuita
+        return false; // plano Plus tem internação gratuita
     }
 
     @Override

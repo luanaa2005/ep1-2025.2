@@ -9,6 +9,9 @@ package repo;
 
 import model.Paciente;     // entidade de domínio (nome, cpf, idade, plano)
 import model.PlanoBasico;  // implementação de plano (por enquanto só este)
+import model.PlanoPlus;      // novo plano
+import model.PlanoEspecial;  // novo plano
+
 
 import java.util.*;        // List, ArrayList, Collections, Optional, Stream
 import java.io.IOException; // IOException = exceções de entrada/saída de arquivo
@@ -55,17 +58,25 @@ public class PacienteRepo {
             String nome      = partes.get(1);       // coluna 1 = Nome
             int idade        = Integer.parseInt(partes.get(2)); // coluna 2 = Idade (string -> int)
             String tipoPlano = (partes.size() >= 4) ? partes.get(3) : ""; // coluna 3 = Plano (pode estar vazia)
-
+            
             // Cria o paciente com os 3 campos básicos (como modelamos)
             Paciente paciente = new Paciente(nome, cpf, idade);
 
-            // Se houver plano no CSV, aplica (por enquanto só BASICO)
-            if (tipoPlano != null && !tipoPlano.isBlank()) {
-                if (tipoPlano.equalsIgnoreCase("BASICO")) {
-                    paciente.setPlano(new PlanoBasico()); // paciente com plano básico
-                }
-                // FUTURO: PLUS, ESPECIAL, etc. (fazer if/else aqui quando criar)
+            // Se houver plano no CSV, aplica (BASICO / PLUS / ESPECIAL / NENHUM)
+    if (tipoPlano != null && !tipoPlano.isBlank()) {
+        switch (tipoPlano.trim().toUpperCase()) {
+            case "BASICO" -> paciente.setPlano(new PlanoBasico());
+            case "PLUS" -> paciente.setPlano(new PlanoPlus());
+            case "ESPECIAL" -> paciente.setPlano(new PlanoEspecial());
+            case "NENHUM" -> paciente.setPlano(null); // explícito: sem plano
+            default -> {
+                // valor desconhecido no CSV: por segurança, sem plano
+                paciente.setPlano(null);
+                // (opcional) System.out.println("Aviso: plano desconhecido no CSV: " + tipoPlano);
             }
+        }
+    }
+
 
             // Adiciona na lista em memória
             pacientes.add(paciente);
@@ -80,8 +91,14 @@ public class PacienteRepo {
 
         // Para cada paciente da lista, montar uma linha "cpf;nome;idade;plano"
         for (Paciente p : pacientes) {
-            // Se não tiver plano, salvamos campo vazio ""; se tiver PlanoBasico, salvamos "BASICO"
-            String tipoPlano = (p.getPlano() == null) ? "" : "BASICO"; // por enquanto só reconhecemos o básico
+            // converte o objeto de plano para a string do CSV (BASICO/PLUS/ESPECIAL/NENHUM)
+            String tipoPlano =
+            (p.getPlano() == null)                    ? "NENHUM" :
+            (p.getPlano() instanceof PlanoBasico)     ? "BASICO"  :
+            (p.getPlano() instanceof PlanoPlus)       ? "PLUS"    :
+            (p.getPlano() instanceof PlanoEspecial)   ? "ESPECIAL":
+            "NENHUM"; // fallback
+
 
             // Junta os campos com ';' usando o util (evita bugs com split)
             String linha = CSVUtil.juntarCampos(List.of(

@@ -1,4 +1,6 @@
 import repo.PacienteRepo;
+import model.PlanoPlus;
+import model.PlanoEspecial;
 import repo.MedicoRepo;
 import repo.ConsultaRepo;
 import repo.InternacaoRepo;
@@ -75,10 +77,60 @@ public class Main {
     }
     System.out.println("\n→ Abra o arquivo data/consultas.csv para ver os dados persistidos.");
 
+    System.out.println("\n===== Testes de PlanoSaude (Consultas) =====");
+
+    // paciente sênior para ver +5%
+    String cpfSenior = "55544433322";
+    if (pacRepo.buscarPorCpf(cpfSenior).isEmpty()) {
+        pacRepo.adicionar(new Paciente("Paciente Senior", cpfSenior, 65));
+    }
+
+    // PlanoPlus no paciente de teste (30 anos) -> CARDIOLOGIA (base 300)
+    pacRepo.buscarPorCpf(cpfTeste).ifPresent(p -> {
+        p.setPlano(new PlanoPlus());
+        try { pacRepo.salvarNoArquivo(); } catch (Exception ignored) {}
+    });
+
+    LocalDateTime dhPlus = LocalDateTime.now()
+            .plusDays(2).withHour(9).withMinute(0).withSecond(0).withNano(0);
+
+    Consulta cPlus = svc.agendar(cpfTeste, "CRM-TEST-1", dhPlus, "Sala 3");
+    System.out.println("PlanoPlus (30 anos, CARDIO) -> preço = " + cPlus.getPrecoFinal()
+            + " (esperado ~ 240.0)");
+
+    // PlanoPlus em paciente 65+ (CARDIO) -> 25% -> ~225
+    pacRepo.buscarPorCpf(cpfSenior).ifPresent(p -> {
+        p.setPlano(new PlanoPlus());
+        try { pacRepo.salvarNoArquivo(); } catch (Exception ignored) {}
+    });
+
+    Consulta cPlusSenior = svc.agendar(cpfSenior, "CRM-TEST-1", dhPlus.plusHours(1), "Sala 4");
+    System.out.println("PlanoPlus (65 anos, CARDIO) -> preço = " + cPlusSenior.getPrecoFinal()
+            + " (esperado ~ 225.0)");
+
+
     // ===== Dia 5 – Internações =====
     System.out.println("\n===== Dia 5 - Internações =====");
     InternacaoRepo intRepo = new InternacaoRepo("data/internacoes.csv");
     InternacaoService intSvc = new InternacaoService(pacRepo, medRepo, intRepo);
+
+    System.out.println("\n===== Teste PlanoEspecial (Internação <7 dias grátis) =====");
+    String cpfPlanoEsp = "22211100099";
+    if (pacRepo.buscarPorCpf(cpfPlanoEsp).isEmpty()) {
+        pacRepo.adicionar(new Paciente("Paciente Especial", cpfPlanoEsp, 40));
+    }
+    pacRepo.buscarPorCpf(cpfPlanoEsp).ifPresent(p -> {
+        p.setPlano(new PlanoEspecial());
+        try { pacRepo.salvarNoArquivo(); } catch (Exception ignored) {}
+    });
+
+    LocalDateTime inicioEsp = LocalDateTime.now().withSecond(0).withNano(0);
+    // quarto 103 para não conflitar com seus testes (101/102)
+    Internacao iEsp = intSvc.internar(cpfPlanoEsp, "CRM-TEST-1", "103", inicioEsp, 300.0);
+    intSvc.alta(iEsp.getId(), inicioEsp.plusDays(3)); // < 7 dias
+    System.out.println("PlanoEspecial: custo (3 dias) = " + iEsp.calcularCustoTotal()
+            + " (esperado 0.0)");
+
 
     LocalDateTime agora = LocalDateTime.now().withSecond(0).withNano(0);
 

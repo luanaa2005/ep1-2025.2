@@ -1,3 +1,5 @@
 cpf;nome;idade;plano
 12345678900;Luana;21;BASICO
-99988877766;Paciente Teste;30;
+99988877766;Paciente Teste;30;PLUS
+55544433322;Paciente Senior;65;PLUS
+22211100099;Paciente Especial;40;ESPECIAL

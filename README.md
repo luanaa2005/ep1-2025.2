@@ -20,14 +20,27 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
 ## Instruções para Compilação e Execução
 
 1. **Compilação:**  
-   rm -rf out && mkdir out
-   javac --release 17 -encoding UTF-8 -d out $(find src -name "*.java") MainMenu.java
+
+``` java
+rm -rf out && mkdir out
+
+// Se tiver JDK 17 instalado:
+javac --release 17 -encoding UTF-8 -d out $(find src -name "*.java") MainMenu.java
+
+// Se estiver usando JDK 21:
+javac --release 21 -encoding UTF-8 -d out $(find src -name "*.java") MainMenu.java
+
+   
+```
 
 2. **Execução:**  
-   JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8" java -cp out MainMenu
+```
 
+   JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8" java -cp out MainMenu
+```
 
 3. **Estrutura de Pastas:**  
+```
    .
    ├─ src/
    │  ├─ model/          # Entidades (Paciente, Medico, Consulta, Internacao, Planos…)
@@ -37,28 +50,32 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
    ├─ MainMenu.java      # Ponto de entrada (menu em linha de comando)
    └─ out/               # Saída da compilação (gerada pelo comando acima)
 
+```
 
 3. **Versão do JAVA utilizada:**  
-   Java 17
+   Java 17. Mas funciona também em Java 21 trocando --release 17 por --release 21 nos comandos de compilação.
 
 ---
 
 ## Vídeo de Demonstração
 
-- [Inserir o link para o vídeo no YouTube/Drive aqui]
+- [(https://drive.google.com/drive/folders/16OxAuskozcvo9SkbI5cbuAg6V7y4JSNn?usp=sharing)]
 
 ---
 
 ## Prints da Execução
 
 1. Menu Principal:  
-   ![Inserir Print 1](caminho/do/print1.png)
+
+   ![Inserir Print 1](imgs/menu.png)
 
 2. Cadastro de Médico:  
-   ![Inserir Print 2](caminho/do/print2.png)
+
+   ![Inserir Print 2](imgs/medico.png)
 
 3. Relatório de ?:  
-   ![Inserir Print 3](caminho/do/print3.png)
+
+   ![Inserir Print 3](imgs/relatorio.png)
 
 ---
 
@@ -66,9 +83,8 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
 
 ## Observações (Extras ou Dificuldades)
 
-- [Espaço para o aluno comentar qualquer funcionalidade extra que implementou, dificuldades enfrentadas, ou considerações importantes.]
+Implementei um menu interativo em linha de comando, persistência em CSV por repositórios e regras de negócio separadas em serviços. Além do CRUD básico, há relatórios (consultas futuras/passadas, médico que mais atendeu, especialidade mais procurada, internados no momento) e cálculo de economia por plano de saúde. Tratei conflitos de agendamento (mesmo médico/local e horário) e ocupação de quartos em internações. As principais dificuldades foram o encoding no Windows (UTF-8) e alinhar versões do Java na compilação/execução. Como melhorias, deixo testes automatizados e mais métricas (ex.: tempo médio de internação).
 
----
 
 ## Contato
 

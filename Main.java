@@ -7,7 +7,7 @@ import repo.InternacaoRepo;
 
 import service.AgendamentoService;
 import service.InternacaoService;
-
+import service.RelatorioService;
 import model.Paciente;
 import model.Medico;
 import model.Especialidade;
@@ -21,7 +21,7 @@ public class Main {
     // ===== Repositórios =====
     PacienteRepo pacRepo = new PacienteRepo("data/pacientes.csv");
     MedicoRepo   medRepo = new MedicoRepo("data/medicos.csv");
-    ConsultaRepo conRepo = new ConsultaRepo("data/consultas.csv");
+    ConsultaRepo conRepo = new ConsultaRepo("data/consultas.csv", pacRepo, medRepo);
 
     // ===== Dados de teste (não duplica) =====
     String cpfTeste = "99988877766";
@@ -114,6 +114,35 @@ public class Main {
     InternacaoRepo intRepo = new InternacaoRepo("data/internacoes.csv");
     InternacaoService intSvc = new InternacaoService(pacRepo, medRepo, intRepo);
 
+    // ===== Dia 7 – Relatórios =====
+    RelatorioService rel = new RelatorioService(pacRepo, medRepo, conRepo, intRepo);
+
+
+    // Histórico por paciente (use um CPF que você tem no CSV)
+    var histCons = rel.historicoConsultasDoPaciente("99988877766");
+    System.out.println("Histórico de CONSULTAS do paciente 99988877766: " + histCons.size());
+
+    var histInt = rel.historicoInternacoesDoPaciente("99988877766");
+    System.out.println("Histórico de INTERNAÇÕES do paciente 99988877766: " + histInt.size());
+
+
+    // 1) Consultas FUTURAS (sem filtro)
+    var futuras = rel.consultasFuturas(null, null, null);
+    System.out.println("\n===== Relatórios =====");
+    System.out.println("Consultas FUTURAS (todas): " + futuras.size());
+
+    // 1a) Futuras filtrando pelo CRM do cardiologista
+    var futurasCardio = rel.consultasFuturas(null, "CRM-TEST-1", null);
+    System.out.println("Futuras (CRM-TEST-1): " + futurasCardio.size());
+
+    // 1b) Futuras filtrando por especialidade GERAL
+    var futurasGeral = rel.consultasFuturas(null, null, Especialidade.GERAL);
+    System.out.println("Futuras (GERAL): " + futurasGeral.size());
+    // 2) Consultas PASSADAS (sem filtro)
+    var passadas = rel.consultasPassadas(null, null, null);
+    System.out.println("Consultas PASSADAS (todas): " + passadas.size());
+
+
     System.out.println("\n===== Teste PlanoEspecial (Internação <7 dias grátis) =====");
     String cpfPlanoEsp = "22211100099";
     if (pacRepo.buscarPorCpf(cpfPlanoEsp).isEmpty()) {
@@ -179,3 +208,10 @@ public class Main {
   
 
 }
+
+
+//# compilar (Java 17 + UTF-8)
+//javac --release 17 -encoding UTF-8 -d out src/model/*.java src/repo/*.java src/service/*.java Main.java
+
+//# executar
+//java -cp out Main

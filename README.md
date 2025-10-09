@@ -193,13 +193,13 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 ✅ Persistência em internacoes.csv
 
 ### Dia 6 – Planos de Saúde e Regras Especiais
-☐ Implementar PlanoBasico
+✅ Implementar PlanoBasico
 
-☐ Implementar PlanoPlus
+✅ Implementar PlanoPlus
 
-☐ Implementar PlanoEspecial (internação <7 dias gratuita, desconto para 60+)
+✅ Implementar PlanoEspecial (internação <7 dias gratuita, desconto para 60+)
 
-☐ Integrar desconto no cálculo de consultas e internações
+✅ Integrar desconto no cálculo de consultas e internações
 
 ### Dia 7 – Relatórios e Revisão Final
 ☐ Relatório de pacientes (com histórico)

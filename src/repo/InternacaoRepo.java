@@ -36,4 +36,11 @@ public class InternacaoRepo {
 
         CSVUtil.escreverLinhas(caminhoArquivo, linhas); // CSVUtil está no mesmo package repo; não precisa importar.
     }
+
+    // TODO: carregar do CSV de verdade.
+    // Por enquanto devolvemos lista vazia só p/ RelatorioService compilar.
+    public List<Internacao> carregarTodos() {
+        return new ArrayList<>();
+    }
+
 }

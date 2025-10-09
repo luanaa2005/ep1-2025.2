@@ -13,14 +13,15 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
 - **Nome completo:** Luana Carvalho de Almeida
 - **Matrícula:** 242004840
 - **Curso:** Engenharias
-- **Turma:** [Preencher aqui]
+- **Turma:** 01
 
 ---
 
 ## Instruções para Compilação e Execução
 
 1. **Compilação:**  
-   [Descrever aqui como compilar o projeto. Exemplo: `javac Main.java` ou o script usado]
+   rm -rf out && mkdir out
+   javac --release 17 -encoding UTF-8 -d out $(find src -name "*.java") MainMenu.java
 
 2. **Execução:**  
    JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8" java -cp out MainMenu
@@ -38,7 +39,7 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
 
 
 3. **Versão do JAVA utilizada:**  
-   [Descrever aqui como versão do JAVA utilizada no projeto. Sugestão: `java 21`]
+   Java 17
 
 ---
 
@@ -211,14 +212,14 @@ O sistema deve simular o funcionamento de um hospital com cadastro de *pacientes
 ✅ Integrar desconto no cálculo de consultas e internações
 
 ### Dia 7 – Relatórios e Revisão Final
-☐ Relatório de pacientes (com histórico)
+✅ Relatório de pacientes (com histórico)
 
-☐ Relatório de médicos (agenda e nº consultas)
+✅ Relatório de médicos (agenda e nº consultas)
 
-☐ Relatório de consultas futuras/passadas (com filtros)
+✅ Relatório de consultas futuras/passadas (com filtros)
 
-☐ Relatório de internados no momento (tempo de internação)
+✅ Relatório de internados no momento (tempo de internação)
 
-☐ Estatísticas (médico que mais atendeu, especialidade mais procurada, economia por plano)
+✅ Estatísticas (médico que mais atendeu, especialidade mais procurada, economia por plano)
 
-☐ Revisar menu principal e testes manuais
+✅ Revisar menu principal e testes manuais

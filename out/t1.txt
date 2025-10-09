@@ -1,0 +1,107 @@
+[H[2J===== HOSPITAL — MENU =====
+1) Cadastrar paciente
+2) Cadastrar médico
+3) Agendar consulta
+4) Concluir consulta
+5) Cancelar consulta
+6) Internar paciente
+7) Dar alta
+8) Cancelar internação
+9) Relatórios rápidos
+0) Sair
+Opção: Nome: CPF: Idade: Plano (NENHUM/BASICO/PLUS/ESPECIAL): Paciente cadastrado.
+
+[Enter para voltar ao menu][H[2J===== HOSPITAL — MENU =====
+1) Cadastrar paciente
+2) Cadastrar médico
+3) Agendar consulta
+4) Concluir consulta
+5) Cancelar consulta
+6) Internar paciente
+7) Dar alta
+8) Cancelar internação
+9) Relatórios rápidos
+0) Sair
+Opção: Opção inválida.
+
+[Enter para voltar ao menu][H[2J===== HOSPITAL — MENU =====
+1) Cadastrar paciente
+2) Cadastrar médico
+3) Agendar consulta
+4) Concluir consulta
+5) Cancelar consulta
+6) Internar paciente
+7) Dar alta
+8) Cancelar internação
+9) Relatórios rápidos
+0) Sair
+Opção: Opção inválida.
+
+[Enter para voltar ao menu][H[2J===== HOSPITAL — MENU =====
+1) Cadastrar paciente
+2) Cadastrar médico
+3) Agendar consulta
+4) Concluir consulta
+5) Cancelar consulta
+6) Internar paciente
+7) Dar alta
+8) Cancelar internação
+9) Relatórios rápidos
+0) Sair
+Opção: Opção inválida.
+
+[Enter para voltar ao menu][H[2J===== HOSPITAL — MENU =====
+1) Cadastrar paciente
+2) Cadastrar médico
+3) Agendar consulta
+4) Concluir consulta
+5) Cancelar consulta
+6) Internar paciente
+7) Dar alta
+8) Cancelar internação
+9) Relatórios rápidos
+0) Sair
+Opção: Opção inválida.
+
+[Enter para voltar ao menu][H[2J===== HOSPITAL — MENU =====
+1) Cadastrar paciente
+2) Cadastrar médico
+3) Agendar consulta
+4) Concluir consulta
+5) Cancelar consulta
+6) Internar paciente
+7) Dar alta
+8) Cancelar internação
+9) Relatórios rápidos
+0) Sair
+Opção: Opção inválida.
+
+[Enter para voltar ao menu][H[2J===== HOSPITAL — MENU =====
+1) Cadastrar paciente
+2) Cadastrar médico
+3) Agendar consulta
+4) Concluir consulta
+5) Cancelar consulta
+6) Internar paciente
+7) Dar alta
+8) Cancelar internação
+9) Relatórios rápidos
+0) Sair
+Opção: 
+--- Relatórios rápidos ---
+Consultas FUTURAS: 0
+Consultas PASSADAS: 0
+Internados agora: 0
+
+[Enter para voltar ao menu][H[2J===== HOSPITAL — MENU =====
+1) Cadastrar paciente
+2) Cadastrar médico
+3) Agendar consulta
+4) Concluir consulta
+5) Cancelar consulta
+6) Internar paciente
+7) Dar alta
+8) Cancelar internação
+9) Relatórios rápidos
+0) Sair
+Opção: 

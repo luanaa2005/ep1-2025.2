@@ -23,10 +23,19 @@ Desenvolvimento de um sistema de gerenciamento hospitalar utilizando os conceito
    [Descrever aqui como compilar o projeto. Exemplo: `javac Main.java` ou o script usado]
 
 2. **Execução:**  
-   [Descrever aqui como executar o projeto. Exemplo: `java Main` ou o script usado]
+   JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8" java -cp out MainMenu
+
 
 3. **Estrutura de Pastas:**  
-   [Descrever aqui as principais pastas do projeto]
+   .
+   ├─ src/
+   │  ├─ model/          # Entidades (Paciente, Medico, Consulta, Internacao, Planos…)
+   │  ├─ repo/           # Repositórios CSV (PacienteRepo, MedicoRepo, ConsultaRepo, InternacaoRepo)
+   │  └─ service/        # Regras de negócio (AgendamentoService, InternacaoService, RelatorioService)
+   ├─ data/              # Arquivos .csv persistidos em runtime
+   ├─ MainMenu.java      # Ponto de entrada (menu em linha de comando)
+   └─ out/               # Saída da compilação (gerada pelo comando acima)
+
 
 3. **Versão do JAVA utilizada:**  
    [Descrever aqui como versão do JAVA utilizada no projeto. Sugestão: `java 21`]

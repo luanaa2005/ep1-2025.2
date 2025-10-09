@@ -1,14 +1,15 @@
 package service;
 
-import model.*;             // Consulta, Especialidade, StatusConsulta, etc.
-import repo.*;              // PacienteRepo, MedicoRepo, ConsultaRepo, InternacaoRepo
+import model.*;                  // Consulta, Especialidade, StatusConsulta, Paciente, Internacao...
+import repo.*;                   // PacienteRepo, MedicoRepo, ConsultaRepo, InternacaoRepo
+
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class RelatorioService {
 
-    // Vamos ler direto dos repositórios pra incluir o que está no CSV
     private final PacienteRepo   pacienteRepo;
     private final MedicoRepo     medicoRepo;
     private final ConsultaRepo   consultaRepo;
@@ -22,43 +23,24 @@ public class RelatorioService {
     }
 
     // ===== 1) CONSULTAS FUTURAS (com filtros opcionais) =====
-    // Filtros:
-    // - cpfPaciente (pode ser null/blank -> ignora)
-    // - crmMedico  (pode ser null/blank -> ignora)
-    // - especialidade (pode ser null -> ignora)
     public List<Consulta> consultasFuturas(String cpfPaciente, String crmMedico, Especialidade esp) throws Exception {
-        // lê TODAS as consultas do CSV (garante que relatórios enxergam dados persistidos)
         List<Consulta> todas = consultaRepo.carregarTodos();
-
         LocalDateTime agora = LocalDateTime.now();
 
-        // stream -> filtra -> ordena -> coleta
         return todas.stream()
-                // só FUTURAS
-                .filter(c -> c.getDataHora().isAfter(agora))
-                // ignora CANCELADAS (normal em relatórios)
-                .filter(c -> c.getStatus() != StatusConsulta.CANCELADA)
-                // filtro opcional por paciente
+                .filter(c -> c.getDataHora().isAfter(agora))                     // só futuras
+                .filter(c -> c.getStatus() != StatusConsulta.CANCELADA)          // ignora canceladas
                 .filter(c -> cpfPaciente == null || cpfPaciente.isBlank() ||
-                             c.getPaciente().getCpf().equals(cpfPaciente))
-                // filtro opcional por médico
+                             c.getPaciente().getCpf().equals(cpfPaciente))       // filtro paciente
                 .filter(c -> crmMedico == null || crmMedico.isBlank() ||
-                             c.getMedico().getCrm().equalsIgnoreCase(crmMedico))
-                // filtro opcional por especialidade do médico
-                .filter(c -> esp == null || c.getMedico().getEspecialidade() == esp)
-                // ordena por data/hora ASC (mais próximas primeiro)
-                .sorted(Comparator.comparing(Consulta::getDataHora))
-                .collect(Collectors.toList());
+                             c.getMedico().getCrm().equalsIgnoreCase(crmMedico)) // filtro médico
+                .filter(c -> esp == null || c.getMedico().getEspecialidade() == esp) // filtro esp.
+                .sorted(Comparator.comparing(Consulta::getDataHora))             // mais próximas primeiro
+                .toList();
     }
 
-    // ========== CONSULTAS PASSADAS ==========
-    // Igual ao de futuras, mas:
-    // - usa isBefore(agora)
-    // - ignora CANCELADAS
-    // - ordena por data/hora DESC (mais recentes primeiro)
-    public List<Consulta> consultasPassadas(String cpfPaciente,
-                                            String crmMedico,
-                                            Especialidade esp) throws Exception {
+    // ===== 2) CONSULTAS PASSADAS =====
+    public List<Consulta> consultasPassadas(String cpfPaciente, String crmMedico, Especialidade esp) throws Exception {
         List<Consulta> todas = consultaRepo.carregarTodos();
         LocalDateTime agora = LocalDateTime.now();
 
@@ -70,44 +52,119 @@ public class RelatorioService {
                 .filter(c -> crmMedico == null || crmMedico.isBlank()
                         || c.getMedico().getCrm().equalsIgnoreCase(crmMedico))
                 .filter(c -> esp == null || c.getMedico().getEspecialidade() == esp)
-                .sorted(Comparator.comparing(Consulta::getDataHora).reversed())
-                .collect(java.util.stream.Collectors.toList());
-       }
+                .sorted(Comparator.comparing(Consulta::getDataHora).reversed()) // mais recentes primeiro
+                .toList();
+    }
 
-    // Histórico de CONSULTAS de um paciente (ordenado por data)
-        public List<Consulta> historicoConsultasDoPaciente(String cpf) throws Exception {
+    // ===== 2.1) HISTÓRICO de consultas por paciente =====
+    public List<Consulta> historicoConsultasDoPaciente(String cpf) throws Exception {
         if (cpf == null || cpf.isBlank()) throw new IllegalArgumentException("CPF vazio");
-        List<Consulta> todas = consultaRepo.carregarTodos(); // lê do CSV
+        List<Consulta> todas = consultaRepo.carregarTodos();
         return todas.stream()
                 .filter(c -> c.getPaciente().getCpf().equals(cpf))
                 .sorted(Comparator.comparing(Consulta::getDataHora))
                 .toList();
-        }
+    }
 
-        // Histórico de INTERNAÇÕES de um paciente (ordenado pela entrada)
-        public List<Internacao> historicoInternacoesDoPaciente(String cpf) throws Exception {
+    // ===== 2.2) HISTÓRICO de internações por paciente =====
+    public List<Internacao> historicoInternacoesDoPaciente(String cpf) throws Exception {
         if (cpf == null || cpf.isBlank()) throw new IllegalArgumentException("CPF vazio");
-        List<Internacao> todas = internacaoRepo.carregarTodos(); // lê do CSV
+        List<Internacao> todas = internacaoRepo.carregarTodos();
         return todas.stream()
                 .filter(i -> i.getPaciente().getCpf().equals(cpf))
                 .sorted(Comparator.comparing(Internacao::getEntrada))
                 .toList();
+    }
+
+    // ===== RECORDS usados no menu =====
+    public record TopMedico(String nome, String crm, long quantidade) {}
+    public record TopEspecialidade(Especialidade especialidade, long quantidade) {}
+    public record InternadoAgora(String nome, String cpf, String quarto, long horas) {}
+    public record EstatPlanos(long basico, long plus, long especial, long nenhum, double economiaTotal) {}
+
+    // ===== 3) MÉDICO que mais atendeu (CONCLUÍDAS) =====
+    public Optional<TopMedico> medicoQueMaisAtendeu() throws Exception {
+        List<Consulta> todas = consultaRepo.carregarTodos();
+
+        Map<String, Long> porCrm = todas.stream()
+                .filter(c -> c.getStatus() == StatusConsulta.CONCLUIDA)
+                .collect(Collectors.groupingBy(c -> c.getMedico().getCrm(), Collectors.counting()));
+
+        return porCrm.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(e -> {
+                    String crm = e.getKey();
+                    long qtd   = e.getValue();
+                    String nome = medicoRepo.buscarPorCrm(crm)
+                            .map(Medico::getNome)
+                            .orElse(crm);
+                    return new TopMedico(nome, crm, qtd);
+                });
+    }
+
+    // ===== 4) ESPECIALIDADE MAIS PROCURADA (CONCLUÍDAS) =====
+    public Optional<TopEspecialidade> especialidadeMaisProcurada() throws Exception {
+        List<Consulta> todas = consultaRepo.carregarTodos();
+
+        Map<Especialidade, Long> porEsp = todas.stream()
+                .filter(c -> c.getStatus() == StatusConsulta.CONCLUIDA)
+                .collect(Collectors.groupingBy(c -> c.getMedico().getEspecialidade(), Collectors.counting()));
+
+        return porEsp.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(e -> new TopEspecialidade(e.getKey(), e.getValue()));
+    }
+
+    // ===== 5) PACIENTES INTERNADOS AGORA (com duração em horas) =====
+    public List<InternadoAgora> pacientesInternadosAgora() throws Exception {
+        List<Internacao> todas = internacaoRepo.carregarTodos();
+        LocalDateTime agora = LocalDateTime.now();
+
+        return todas.stream()
+                .filter(i -> i.getSaida() == null) // ainda internados
+                .map(i -> {
+                    long horas = Math.max(0, Duration.between(i.getEntrada(), agora).toHours());
+                    return new InternadoAgora(
+                            i.getPaciente().getNome(),
+                            i.getPaciente().getCpf(),
+                            i.getQuarto(),
+                            horas
+                    );
+                })
+                .sorted(Comparator.comparingLong(InternadoAgora::horas).reversed())
+                .toList();
+    }
+
+    // ===== 6) PLANOS: contagem por tipo + economia total =====
+    public EstatPlanos estatisticaPlanos() throws Exception {
+        // contagem por tipo de plano
+        List<Paciente> pacientes = pacienteRepo.listarTodos();
+        long basico = pacientes.stream().filter(p -> p.getPlano() instanceof PlanoBasico).count();
+        long plus   = pacientes.stream().filter(p -> p.getPlano() instanceof PlanoPlus).count();
+        long esp    = pacientes.stream().filter(p -> p.getPlano() instanceof PlanoEspecial).count();
+        long nenhum = pacientes.stream().filter(p -> p.getPlano() == null).count();
+
+        double economia = 0.0;
+
+        // economia em CONSULTAS: considerar apenas CONCLUÍDAS
+        for (Consulta c : consultaRepo.carregarTodos()) {
+            if (c.getStatus() == StatusConsulta.CONCLUIDA) {
+                double base = c.getMedico().getCustoBaseConsulta();
+                double diff = Math.max(0, base - c.getPrecoFinal());
+                economia += diff;
+            }
         }
 
+        // economia em INTERNAÇÕES: baseline (dias * custoBaseDia) - valor cobrado (calcularCustoTotal)
+        for (Internacao i : internacaoRepo.carregarTodos()) {
+            if (i.getSaida() == null) continue; // só completas
+            long dias = Math.max(1, Duration.between(i.getEntrada(), i.getSaida()).toDays());
+            double baseline = dias * i.getCustoBaseDia();
+            double cobrado  = i.calcularCustoTotal(); // já considera gratuidades <7d no seu modelo
+            double diff = Math.max(0, baseline - cobrado);
+            economia += diff;
+        }
 
-    // ===== 3) MÉDICO QUE MAIS ATENDEU (em consultas CONCLUÍDAS) =====
-    // dica: agrupar por CRM do médico (String) e contar; pegar o maior
-    // TODO: implementar
-
-    // ===== 4) ESPECIALIDADE MAIS PROCURADA =====
-    // dica: agrupar por c.getMedico().getEspecialidade() em CONCLUÍDAS; pegar o maior
-    // TODO: implementar
-
-    // ===== 5) PACIENTES INTERNADOS NO MOMENTO (com tempo) =====
-    // dica: filtrar internacoes com saida == null; Duration.between(entrada, now)
-    // TODO: implementar
-
-    // ===== 6) PLANOS: quantidades por tipo e economia total =====
-    // dica: contar tipos em pacientes.csv; economia = (custoBase - precoFinal) + gratuidades <7d
-    // TODO: implementar
+        return new EstatPlanos(basico, plus, esp, nenhum, economia);
+    }
 }

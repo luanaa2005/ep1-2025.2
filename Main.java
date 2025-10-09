@@ -21,6 +21,7 @@ public class Main {
     // ===== Repositórios =====
     PacienteRepo pacRepo = new PacienteRepo("data/pacientes.csv");
     MedicoRepo   medRepo = new MedicoRepo("data/medicos.csv");
+    // ConsultaRepo que reconstroi objetos a partir do CSV
     ConsultaRepo conRepo = new ConsultaRepo("data/consultas.csv", pacRepo, medRepo);
 
     // ===== Dados de teste (não duplica) =====
@@ -108,7 +109,6 @@ public class Main {
     System.out.println("PlanoPlus (65 anos, CARDIO) -> preço = " + cPlusSenior.getPrecoFinal()
             + " (esperado ~ 225.0)");
 
-
     // ===== Dia 5 – Internações =====
     System.out.println("\n===== Dia 5 - Internações =====");
     InternacaoRepo intRepo = new InternacaoRepo("data/internacoes.csv");
@@ -117,14 +117,12 @@ public class Main {
     // ===== Dia 7 – Relatórios =====
     RelatorioService rel = new RelatorioService(pacRepo, medRepo, conRepo, intRepo);
 
-
     // Histórico por paciente (use um CPF que você tem no CSV)
     var histCons = rel.historicoConsultasDoPaciente("99988877766");
     System.out.println("Histórico de CONSULTAS do paciente 99988877766: " + histCons.size());
 
     var histInt = rel.historicoInternacoesDoPaciente("99988877766");
     System.out.println("Histórico de INTERNAÇÕES do paciente 99988877766: " + histInt.size());
-
 
     // 1) Consultas FUTURAS (sem filtro)
     var futuras = rel.consultasFuturas(null, null, null);
@@ -138,10 +136,10 @@ public class Main {
     // 1b) Futuras filtrando por especialidade GERAL
     var futurasGeral = rel.consultasFuturas(null, null, Especialidade.GERAL);
     System.out.println("Futuras (GERAL): " + futurasGeral.size());
+
     // 2) Consultas PASSADAS (sem filtro)
     var passadas = rel.consultasPassadas(null, null, null);
     System.out.println("Consultas PASSADAS (todas): " + passadas.size());
-
 
     System.out.println("\n===== Teste PlanoEspecial (Internação <7 dias grátis) =====");
     String cpfPlanoEsp = "22211100099";
@@ -160,7 +158,6 @@ public class Main {
     System.out.println("PlanoEspecial: custo (3 dias) = " + iEsp.calcularCustoTotal()
             + " (esperado 0.0)");
 
-
     LocalDateTime agora = LocalDateTime.now().withSecond(0).withNano(0);
 
     // 1) Internar (OK)
@@ -174,7 +171,6 @@ public class Main {
     } catch (Exception e) {
         System.out.println("Esperado (paciente já ativo): " + e.getMessage());
     }
-
 
     // 2) Quarto ocupado (ERRO esperado)
     try {
@@ -193,7 +189,6 @@ public class Main {
     Internacao i2 = intSvc.internar(cpfTeste, "CRM-TEST-2", "102", amanha8.plusHours(1), 220.0);
     System.out.println("Internado novamente -> id=" + i2.getId() + ", quarto=102 (após alta)");
 
-
     // 4) Cancelar após alta (ERRO esperado)
     try {
       intSvc.cancelar(i1.getId());
@@ -202,16 +197,33 @@ public class Main {
       System.out.println("Esperado (cancelar após alta): " + e.getMessage());
     }
 
+    // ===== Estatísticas extras (Dia 7) =====
+    System.out.println("\n===== Estatísticas =====");
+
+    // 1) Médico que mais atendeu (CONCLUÍDAS)
+    rel.medicoQueMaisAtendeu().ifPresentOrElse(
+        t -> System.out.println("Top médico: " + t.nome() + " (" + t.crm() + "), consultas concluídas = " + t.quantidade()),
+        () -> System.out.println("Top médico: ainda não há consultas concluídas.")
+    );
+
+    // 2) Especialidade mais procurada (CONCLUÍDAS)
+    rel.especialidadeMaisProcurada().ifPresentOrElse(
+        e -> System.out.println("Especialidade mais procurada: " + e.especialidade() + " (" + e.quantidade() + ")"),
+        () -> System.out.println("Especialidade mais procurada: ainda sem dados.")
+    );
+
+    // 3) Internados no momento
+    var internadosAgora = rel.pacientesInternadosAgora();
+    System.out.println("Internados agora: " + internadosAgora.size());
+    internadosAgora.forEach(i ->
+        System.out.println("- " + i.nome() + " (CPF " + i.cpf() + "), quarto " + i.quarto() + ", " + i.horas() + "h internado(s)")
+    );
+
+    // 4) Planos: adesão e economia total
+    var planos = rel.estatisticaPlanos();
+    System.out.printf("Planos — Básico:%d  Plus:%d  Especial:%d  Nenhum:%d  | Economia total: %.2f%n",
+            planos.basico(), planos.plus(), planos.especial(), planos.nenhum(), planos.economiaTotal());
+
     System.out.println("→ Veja data/internacoes.csv");
   }
-
-  
-
 }
-
-
-//# compilar (Java 17 + UTF-8)
-//javac --release 17 -encoding UTF-8 -d out src/model/*.java src/repo/*.java src/service/*.java Main.java
-
-//# executar
-//java -cp out Main

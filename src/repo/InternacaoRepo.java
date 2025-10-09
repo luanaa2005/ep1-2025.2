@@ -37,6 +37,18 @@ public class InternacaoRepo {
         CSVUtil.escreverLinhas(caminhoArquivo, linhas); // CSVUtil está no mesmo package repo; não precisa importar.
     }
 
+    // Top 1 médico por nº de consultas CONCLUÍDAS.
+    // Retorna Optional com um “resultado simples” (crm, nome, quantidade).
+    public Optional<TopMedico> medicoQueMaisAtendeu() throws Exception {
+        // TODO: carregar consultas; filtrar CONCLUIDA; agrupar por CRM; pegar o maior;
+        // depois, com o CRM, buscar o médico no MedicoRepo para pegar o nome.
+        return Optional.empty();
+    }
+
+    // “DTO” simples só pra devolver info organizada (Java 17 suporta record).
+    public static record TopMedico(String crm, String nome, long quantidade) {}
+
+
     // TODO: carregar do CSV de verdade.
     // Por enquanto devolvemos lista vazia só p/ RelatorioService compilar.
     public List<Internacao> carregarTodos() {
